@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="auth-styles.css">
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="Company Logo" class="logo">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="link">
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </div>
+  <footer>&copy; 2024 [Your Company Name]</footer>
+
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('http://localhost:3006/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert(result.message); // "User registered successfully"
+          window.location.href = 'login.html'; // Redirect to login
+        } else {
+          alert(result.error || 'Signup failed');
+        }
+      } catch (error) {
+        alert('An error occurred: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

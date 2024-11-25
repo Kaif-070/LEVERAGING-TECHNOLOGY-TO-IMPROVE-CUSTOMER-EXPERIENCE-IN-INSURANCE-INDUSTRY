@@ -1,0 +1,225 @@
+/* General Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 1.8;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Header Section */
+header {
+  background: linear-gradient(to right, #1a73e8, #007bff);
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+header p {
+  font-size: 1.2em;
+  margin: 10px 0 20px;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+}
+
+.logo img {
+  max-width: 120px;
+  height: auto;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.auth-buttons button {
+  background: #ffc107;
+  border: none;
+  padding: 12px 20px;
+  margin: 0 5px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+  font-size: 1em;
+  transition: all 0.3s ease-in-out;
+}
+
+.auth-buttons button:hover {
+  background: #e0a800;
+  transform: scale(1.05);
+}
+
+/* Features and Company Details */
+section {
+  text-align: center;
+  padding: 40px 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}
+
+section h2 {
+  font-size: 2em;
+  color: #1a73e8;
+  margin-bottom: 20px;
+}
+
+section ul {
+  list-style: none;
+  padding: 0;
+}
+
+section ul li {
+  padding: 10px 0;
+  font-size: 1.1em;
+  color: #555;
+}
+
+/* Bottom Buttons */
+.bottom-buttons {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.bottom-buttons button {
+  background: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  margin: 10px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease-in-out;
+}
+
+.bottom-buttons button:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+/* Footer Section */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #333;
+  color: white;
+  font-size: 0.9em;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+footer a:hover {
+  color: #ffc107;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal h2 {
+  font-size: 1.8em;
+  color: #333;
+}
+
+.modal .close {
+  font-size: 2em;
+  color: #888;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.modal .close:hover {
+  color: #e74c3c;
+}
+
+/* Form Styles */
+form input,
+form textarea,
+form button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-size: 1.1em;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+form textarea {
+  resize: vertical;
+}
+
+#rating input[type="radio"] {
+  display: none;
+}
+
+#rating label {
+  font-size: 1.5em;
+  color: #ffd700;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#rating label:hover {
+  color: #f39c12;
+}
+
+#rating input[type="radio"]:checked ~ label {
+  color: #f39c12;
+}
