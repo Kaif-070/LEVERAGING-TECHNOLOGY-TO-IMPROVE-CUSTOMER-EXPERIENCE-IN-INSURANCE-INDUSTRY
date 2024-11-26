@@ -1,89 +1,143 @@
 /* Global Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
+  background-color: #f4f4f9;
+  line-height: 1.6;
 }
 
-/* Header */
+.container {
+  width: 80%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+h1, h2 {
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+}
+
+/* Header Styling */
 header {
-  background-color: #007bff;
+  background-color: #0066cc;
   color: white;
-  padding: 1rem;
+  padding: 20px 0;
   text-align: center;
 }
 
-.logo {
-  max-width: 50px;
+header .logo {
+  max-height: 50px;
   vertical-align: middle;
 }
 
-/* Main Content */
+/* Main Section Styling */
 main {
-  padding: 2rem;
+  padding: 20px 0;
 }
 
-/* Section Styles */
 section {
-  background-color: white;
+  background: white;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  color: #007bff;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-/* Buttons */
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-/* Detail Sections */
-#policy-details, #transaction-details, #qr-code {
-  margin-top: 1rem;
-  background-color: #f9f9f9;
-  padding: 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.section-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
   color: #333;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #007bff;
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #0066cc;
+}
+
+button {
+  background-color: #0066cc;
   color: white;
-  position: relative;
-  bottom: 0;
-  width: 100%;
+  border: none;
+  padding: 12px 25px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #0052a3;
+  transform: translateY(-2px);
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Output Section */
+.output-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+}
+
+.output-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.output-section li {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+/* Footer Styling */
+footer {
+  background-color: #0066cc;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 95%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  input, button {
+    font-size: 1rem;
+  }
 }

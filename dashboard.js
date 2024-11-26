@@ -1,108 +1,95 @@
+const API_BASE_URL = 'http://localhost:3006';
+
 // Function to fetch and display policy details
 async function fetchPolicyDetails() {
   const policyId = document.getElementById('policy-id').value.trim();
 
   if (!policyId) {
-    document.getElementById('policy-details').innerText = 'Please enter a valid Policy ID.';
+    alert('Please enter a valid Policy ID.');
     return;
   }
 
   try {
-    const response = await fetch(`http://localhost:3006/policy/${policyId}`);
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
+    const response = await fetch(`${API_BASE_URL}/policy/${policyId}`);
     const data = await response.json();
-    if (data.error) {
-      throw new Error(data.error);
-    }
+
+    if (data.error) throw new Error(data.error);
 
     const { policy } = data;
 
+    // Map to database schema fields
     document.getElementById('policy-details').innerHTML = `
       <h3>Policy Details</h3>
-      <p><strong>Policy ID:</strong> ${policy.id}</p>
-      <p><strong>Holder Name:</strong> ${policy.holder_name}</p>
-      <p><strong>Details:</strong> ${policy.details}</p>
+      <p><strong>Policy ID:</strong> ${policy.policy_id}</p>
+      <p><strong>Policy Type:</strong> ${policy.policy_type}</p>
+      <p><strong>Premium Amount:</strong> ${policy.premium_amount}</p>
+      <p><strong>Coverage Details:</strong> ${policy.coverage_details}</p>
+      <p><strong>Status:</strong> ${policy.policy_status}</p>
+      <p><strong>Agent Name:</strong> ${policy.agent_name}</p>
+      <p><strong>Contact Email:</strong> ${policy.contact_email}</p>
+      <p><strong>Contact Phone:</strong> ${policy.contact_phone}</p>
     `;
   } catch (error) {
-    console.error('Error fetching policy details:', error);
-    document.getElementById('policy-details').innerText =
-      'An error occurred while fetching policy details. Please try again.';
+    document.getElementById('policy-details').innerText = `Error: ${error.message}`;
   }
 }
 
-// Function to fetch and display transaction and claim history
+// Function to fetch transaction and claim history
 async function fetchTransactionHistory() {
   const policyId = document.getElementById('policy-id').value.trim();
 
   if (!policyId) {
-    document.getElementById('transaction-details').innerText = 'Please enter a valid Policy ID to view history.';
+    alert('Please enter a valid Policy ID.');
     return;
   }
 
   try {
-    const response = await fetch(`http://localhost:3006/policy/${policyId}`);
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
+    const response = await fetch(`${API_BASE_URL}/policy/${policyId}`);
     const data = await response.json();
-    if (data.error) {
-      throw new Error(data.error);
-    }
 
-    const { transactions, claims } = data;
+    if (data.error) throw new Error(data.error);
 
-    // Format Date Helper
-    const formatDate = (dateStr) => {
-      if (!dateStr) return 'N/A';
-      const date = new Date(dateStr);
-      return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    };
+    // Map transactions to database schema
+    const transactionsHTML = data.transactions
+      .map(
+        (tx) => `
+          <li>
+            <strong>Date:</strong> ${tx.transaction_date}<br>
+            <strong>Amount:</strong> ${tx.amount}<br>
+            <strong>Payment Method:</strong> ${tx.payment_method}<br>
+            <strong>Reference:</strong> ${tx.reference_number}<br>
+            <strong>Type:</strong> ${tx.transaction_type}<br>
+            <strong>Remarks:</strong> ${tx.remarks}
+          </li>`
+      )
+      .join('');
 
-    // Handle Transactions
-    let transactionsHTML = '<p>No transactions found.</p>';
-    if (transactions.length > 0) {
-      transactionsHTML = `
-        <h4>Transaction History:</h4>
-        <ul>
-          ${transactions.map(
-            (transaction) =>
-              `<li>
-                <strong>Date:</strong> ${transaction.transaction_date}<br>
-                <strong>Details:</strong> ${transaction.details}
-              </li>`
-          ).join('')}
-        </ul>`;
-    }
-
-    // Handle Claims
-    let claimsHTML = '<p>No claims found.</p>';
-    if (claims.length > 0) {
-      claimsHTML = `
-        <h4>Claim History:</h4>
-        <ul>
-          ${claims.map(
-            (claim) =>
-              `<li>
-                <strong>Amount:</strong> ${claim.amount}<br>
-                <strong>Date:</strong> ${formatDate(claim.date)}<br>
-                <strong>Status:</strong> ${claim.status}
-              </li>`
-          ).join('')}
-        </ul>`;
-    }
+    // Map claims to database schema
+    const claimsHTML = data.claims
+      .map(
+        (claim) => `
+          <li>
+            <strong>Claim Date:</strong> ${claim.claim_date}<br>
+            <strong>Type:</strong> ${claim.claim_type}<br>
+            <strong>Description:</strong> ${claim.claim_description}<br>
+            <strong>Processed Date:</strong> ${claim.date_processed}<br>
+            <strong>Handler:</strong> ${claim.handler_name}<br>
+            <strong>Reimbursement:</strong> ${claim.reimbursement_amount}<br>
+            <strong>Status:</strong> ${claim.status}<br>
+            <strong>Reason:</strong> ${claim.reason_for_status}<br>
+            <strong>Remarks:</strong> ${claim.remarks}
+          </li>`
+      )
+      .join('');
 
     document.getElementById('transaction-details').innerHTML = `
-      ${transactionsHTML}
-      ${claimsHTML}
+      <h3>Transactions</h3>
+      <ul>${transactionsHTML}</ul>
+      <h3>Claims</h3>
+      <ul>${claimsHTML}</ul>
     `;
   } catch (error) {
-    console.error('Error fetching transaction history:', error);
-    document.getElementById('transaction-details').innerText =
-      'An error occurred while fetching transaction and claim history. Please try again.';
+    document.getElementById('transaction-details').innerText = `Error: ${error.message}`;
   }
 }
 

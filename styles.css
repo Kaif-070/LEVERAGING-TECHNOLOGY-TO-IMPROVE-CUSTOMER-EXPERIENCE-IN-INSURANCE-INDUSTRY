@@ -5,8 +5,9 @@ body {
   padding: 0;
   box-sizing: border-box;
   line-height: 1.8;
-  background-color: #f5f7fa;
+  background: linear-gradient(to bottom, #e0f7fa, #ffffff); /* Light gradient from blue to white */
   color: #333;
+  background-attachment: fixed; /* Ensures the background remains fixed */
 }
 
 /* Header Section */
@@ -17,6 +18,7 @@ header {
   text-align: center;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 5px solid #0066cc; /* A subtle line below the header for visual impact */
 }
 
 header h1 {

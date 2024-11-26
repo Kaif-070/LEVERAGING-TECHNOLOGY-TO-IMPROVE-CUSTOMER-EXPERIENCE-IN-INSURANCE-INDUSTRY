@@ -30,7 +30,7 @@ db.connect((err) => {
   console.log('Connected to the database');
 });
 
-// Format date and time
+// Helper Function: Format Date and Time
 const formatDateTime = (dateTime) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
   return new Date(dateTime).toLocaleDateString('en-US', options);
@@ -104,7 +104,6 @@ app.post('/login', (req, res) => {
   });
 });
 
-
 // Fetch Policy Details with Transactions and Claims
 app.get('/policy/:id', (req, res) => {
   const policyId = req.params.id;
@@ -113,8 +112,8 @@ app.get('/policy/:id', (req, res) => {
     return res.status(400).json({ error: 'Policy ID is required' });
   }
 
-  // Query to get policy details
-  const policyQuery = 'SELECT * FROM policies WHERE id = ?';
+  // Fetch Policy Details
+  const policyQuery = 'SELECT * FROM policies WHERE policy_id = ?';
   db.query(policyQuery, [policyId], (err, policyResults) => {
     if (err) {
       console.error('Database error:', err);
@@ -127,7 +126,7 @@ app.get('/policy/:id', (req, res) => {
 
     const policy = policyResults[0];
 
-    // Query to get transaction history
+    // Fetch Transaction History
     const transactionQuery = 'SELECT * FROM transactions WHERE policy_id = ? ORDER BY transaction_date DESC';
     db.query(transactionQuery, [policyId], (err, transactionResults) => {
       if (err) {
@@ -135,7 +134,7 @@ app.get('/policy/:id', (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch transactions' });
       }
 
-      // Query to get claims
+      // Fetch Claims
       const claimsQuery = 'SELECT * FROM claims WHERE policy_id = ?';
       db.query(claimsQuery, [policyId], (err, claimsResults) => {
         if (err) {
@@ -143,7 +142,7 @@ app.get('/policy/:id', (req, res) => {
           return res.status(500).json({ error: 'Failed to fetch claims' });
         }
 
-        // Format data
+        // Format Transactions and Claims
         const formattedTransactions = transactionResults.map((transaction) => ({
           ...transaction,
           transaction_date: formatDateTime(transaction.transaction_date),
@@ -154,14 +153,24 @@ app.get('/policy/:id', (req, res) => {
           claim_date: formatDateTime(claim.claim_date),
         }));
 
-        // Response
-        const response = {
-          policy,
+        // Send Response
+        res.json({
+          policy: {
+            policy_id: policy.policy_id,
+            customer_id: policy.customer_id,
+            policy_type: policy.policy_type,
+            start_date: formatDateTime(policy.start_date),
+            end_date: formatDateTime(policy.end_date),
+            premium_amount: policy.premium_amount,
+            coverage_details: policy.coverage_details,
+            policy_status: policy.policy_status,
+            agent_name: policy.agent_name,
+            contact_email: policy.contact_email,
+            contact_phone: policy.contact_phone,
+          },
           transactions: formattedTransactions,
           claims: formattedClaims,
-        };
-
-        res.json(response);
+        });
       });
     });
   });
@@ -176,7 +185,7 @@ app.get('/generate-qr/:id', async (req, res) => {
   }
 
   try {
-    const ngrokUrl = 'https://7429-182-71-109-122.ngrok-free.app'; //ngrok URL
+    const ngrokUrl = 'https://780e-203-192-253-157.ngrok-free.app'; //ngrok URL
     const qrCodeUrl = `${ngrokUrl}/policy/${policyId}`;
     const qrCodeImage = await QRCode.toDataURL(qrCodeUrl);
     res.json({ qrCodeImage, qrCodeUrl });
@@ -186,7 +195,7 @@ app.get('/generate-qr/:id', async (req, res) => {
   }
 });
 
-// Start server
+// Start Server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
