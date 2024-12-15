@@ -9,51 +9,61 @@
 <body>
   <!-- Header -->
   <header>
-    <div class="container">
+    <div class="header-container">
       <img src="logo.png" alt="Company Logo" class="logo">
       <h1>Welcome to Your Dashboard</h1>
+      <div class="menu-container">
+        <button class="menu-btn" onclick="toggleMenu()">⋮</button>
+        <div class="menu-options" id="menu-options">
+          <a href="fake-payment.html">Make Payment</a>
+          <a href="claim.html">Submit New Claim</a>
+          <a href="index.html">Sign Out</a>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Main Content -->
   <main>
-    <!-- Check Policy Section -->
-    <section id="check-policy" class="section-card">
-      <h2>Check Policy Details</h2>
-      <form id="policy-form">
-        <label for="policy-id">Enter Policy ID:</label>
-        <input type="text" id="policy-id" name="policyId" placeholder="e.g., 1" required>
-        <button type="button" onclick="fetchPolicyDetails()">Get Details</button>
-      </form>
-      <div id="policy-details" class="output-section"></div>
-    </section>
+    <div class="flex-container">
+      <!-- Check Policy Section -->
+      <section id="check-policy" class="section-card">
+        <h2>Check Policy Details</h2>
+        <form id="policy-form">
+          <label for="policy-id">Enter Policy ID:</label>
+          <input type="text" id="policy-id" name="policyId" placeholder="e.g., 1" required>
+          <button type="button" onclick="fetchPolicyDetails()">Get Details</button>
+        </form>
+        <div id="policy-details" class="output-section"></div>
+        <button id="tts-policy-button" class="tts-button">🔊 Read Policy Details</button>
+      </section>
 
-    <!-- Transaction History Section -->
-    <section id="transaction-history" class="section-card">
-      <h2>Transaction and Claim History</h2>
-      <button type="button" onclick="fetchTransactionHistory()">View History</button>
-      <div id="transaction-details" class="output-section"></div>
-    </section>
+      <!-- Transaction History Section -->
+      <section id="transaction-history" class="section-card">
+        <h2>Transaction and Claim History</h2>
+        <button type="button" onclick="fetchTransactionHistory()">View History</button>
+        <div id="transaction-details" class="output-section"></div>
+        <button id="tts-transaction-button" class="tts-button">🔊 Read Transaction and Claim Details</button>
+      </section>
 
-    <!-- QR Code Section -->
-    <section id="policy-qr" class="section-card">
-      <h2>Get Policy Details by QR Code</h2>
-      <form id="qr-form">
-        <label for="policy-qr-id">Enter Policy ID:</label>
-        <input type="text" id="policy-qr-id" name="policyQrId" placeholder="e.g., 1" required>
-        <button type="button" onclick="generateQRCode()">Generate QR Code</button>
-      </form>
-      <div id="qr-code" class="output-section"></div>
-    </section>
-  </main>
+      <!-- QR Code Section -->
+      <section id="policy-qr" class="section-card">
+        <h2>Get Policy Details by QR Code</h2>
+        <form id="qr-form">
+          <label for="policy-qr-id">Enter Policy ID:</label>
+          <input type="text" id="policy-qr-id" name="policyQrId" placeholder="e.g., 1" required>
+          <button type="button" onclick="generateQRCode()">Generate QR Code</button>
+        </form>
+        <div id="qr-code" class="output-section"></div>
+      </section>
+    </div>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2024 InsurTech Solutions. All Rights Reserved.</p>
-    </div>
+    <p>&copy; 2024 InsurTech Solutions. All Rights Reserved.</p>
   </footer>
 
+  <!-- JavaScript -->
   <script src="dashboard.js"></script>
 </body>
 </html>

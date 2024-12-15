@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: linear-gradient(120deg, #007bff, #6c757d);
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      width: 100px;
+    }
+    input, button, select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      margin-top: 20px;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Company Logo -->
+    <img src="logo.png" alt="Company Logo" class="logo">
+
+    <!-- Form Heading -->
+    <h2>Make a Payment</h2>
+    
+    <!-- Payment Form -->
+    <label for="policy_id">Policy ID:</label>
+    <input type="text" id="policy_id" placeholder="Enter your Policy ID" />
+
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" placeholder="Enter the payment amount" />
+
+    <label for="payment_method">Payment Method:</label>
+    <select id="payment_method">
+      <option value="Card">Card</option>
+      <option value="UPI">UPI</option>
+    </select>
+
+    <div id="paymentDetails"></div>
+
+    <button id="payNow">Pay Now</button>
+    <div id="message"></div>
+  </div>
+  <script>
+    const paymentMethodSelect = document.getElementById('payment_method');
+    const paymentDetailsDiv = document.getElementById('paymentDetails');
+
+    // Event listener to update the form dynamically based on payment method
+    paymentMethodSelect.addEventListener('change', () => {
+      const selectedMethod = paymentMethodSelect.value;
+      paymentDetailsDiv.innerHTML = ''; // Clear previous details
+
+      if (selectedMethod === 'Card') {
+        paymentDetailsDiv.innerHTML = `
+          <label for="card_number">Card Number:</label>
+          <input type="text" id="card_number" placeholder="Enter your card number" />
+          <label for="expiry_date">Expiry Date:</label>
+          <input type="month" id="expiry_date" />
+          <label for="cvv">CVV:</label>
+          <input type="text" id="cvv" placeholder="Enter your CVV" />
+        `;
+      } 
+      else if (selectedMethod === 'UPI') {
+        paymentDetailsDiv.innerHTML = `
+          <label for="upi_id">UPI ID:</label>
+          <input type="text" id="upi_id" placeholder="Enter your UPI ID" />
+        `;
+      }
+    });
+
+    document.getElementById('payNow').addEventListener('click', () => {
+      const policyId = document.getElementById('policy_id').value;
+      const amount = document.getElementById('amount').value;
+      const paymentMethod = paymentMethodSelect.value;
+
+      let paymentDetails = {};
+      if (paymentMethod === 'Card') {
+        paymentDetails = {
+          card_number: document.getElementById('card_number').value,
+          expiry_date: document.getElementById('expiry_date').value,
+          cvv: document.getElementById('cvv').value,
+        };
+      } else if (paymentMethod === 'UPI') {
+        paymentDetails = { upi_id: document.getElementById('upi_id').value };
+      }
+
+      if (!policyId || !amount || Object.values(paymentDetails).includes('')) {
+        document.getElementById('message').innerText = 'Please fill in all fields.';
+        document.getElementById('message').classList.add('error');
+        return;
+      }
+
+      fetch('http://localhost:3006/make-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          policy_id: policyId,
+          amount: parseFloat(amount),
+          payment_method: paymentMethod,
+          payment_details: paymentDetails,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            document.getElementById('message').innerText = `Error: ${data.error}`;
+            document.getElementById('message').classList.add('error');
+          } else {
+            document.getElementById('message').innerText = `Payment Successful! Amount: ${data.amount}`;
+            document.getElementById('message').classList.remove('error');
+            document.getElementById('message').classList.add('message');
+          }
+        })
+        .catch((err) => {
+          document.getElementById('message').innerText = 'Error processing payment.';
+          document.getElementById('message').classList.add('error');
+          console.error(err);
+        });
+    });
+  </script>
+</body>
+</html>

@@ -22,13 +22,74 @@ h1, h2 {
 header {
   background-color: #0066cc;
   color: white;
-  padding: 20px 0;
-  text-align: center;
+  padding: 10px 0;
+  position: relative;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 header .logo {
   max-height: 50px;
-  vertical-align: middle;
+}
+
+h1 {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.menu-container {
+  position: relative;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.menu-options {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  color: #0066cc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 150px;
+  z-index: 10;
+}
+
+.menu-options a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-options a:hover {
+  background-color: #f4f4f9;
+}
+
+.menu-options a:last-child {
+  border-bottom: none;
+}
+
+/* Show menu when clicked */
+.menu-options.show {
+  display: block;
 }
 
 /* Main Section Styling */

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Claim</title>
+    <link rel="stylesheet" href="claim.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <img src="logo.png" alt="Company Logo" class="logo">
+        <h2>Submit Claim</h2>
+        <form id="claimForm">
+            <label for="policy_id">Policy ID:</label>
+            <input type="text" id="policy_id" name="policy_id" required><br><br>
+
+            <label for="claim_type">Claim Type:</label>
+            <select id="claim_type" name="claim_type" required>
+        <option value="">Select Claim Type</option>
+        <option value="Accident">Accident</option>
+        <option value="Health">Health</option>
+        <option value="Theft">Theft</option>
+        <option value="Fire">Fire</option>
+        <option value="Natural Disaster">Natural Disaster</option>
+      </select><br><br>
+
+            <label for="claim_description">Claim Description:</label>
+            <textarea id="claim_description" name="claim_description" required></textarea><br><br>
+
+            <label for="claim_date">Claim Date:</label>
+            <input type="date" id="claim_date" name="claim_date" required><br><br>
+
+            <label for="claim_amount">Claim Amount:</label>
+            <input type="number" id="claim_amount" name="claim_amount" required><br><br>
+
+            <label for="claim-proof">Proof Document:</label>
+            <input type="file" id="claim-proof" name="claim-proof" required><br><br>
+
+            <button type="submit">Submit Claim</button>
+        </form>
+    </div>
+
+    <!-- Modal for Success/Failure message -->
+    <div id="responseModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <button id="modalButton" class="modal-button">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('claimForm');
+
+            if (form) {
+                form.addEventListener('submit', async(event) => {
+                    event.preventDefault(); // Prevent form submission
+
+                    // Get form data using FormData object
+                    const formData = new FormData();
+                    formData.append('policy_id', document.getElementById('policy_id').value);
+                    formData.append('claim_type', document.getElementById('claim_type').value);
+                    formData.append('claim_description', document.getElementById('claim_description').value);
+                    formData.append('claim_date', document.getElementById('claim_date').value);
+                    formData.append('claim_amount', document.getElementById('claim_amount').value);
+                    formData.append('claim-proof', document.getElementById('claim-proof').files[0]);
+
+                    try {
+                        // Make the POST request to your server API
+                        const response = await fetch('http://localhost:3006/api/claims', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        const data = await response.json();
+                        const modalMessage = document.getElementById('modalMessage');
+                        const modal = document.getElementById('responseModal');
+
+                        // Check if response is OK (success)
+                        if (response.ok) {
+                            modalMessage.textContent = `Claim submitted successfully. Claim ID: ${data.claimId}`;
+                        } else {
+                            modalMessage.textContent = `Error: ${data.error || 'An error occurred. Please try again.'}`;
+                        }
+
+                        // Show the modal
+                        modal.style.display = 'block';
+                    } catch (error) {
+                        console.error('Error:', error);
+
+                        // Error in case of request failure
+                        const modalMessage = document.getElementById('modalMessage');
+                        const modal = document.getElementById('responseModal');
+                        modalMessage.textContent = 'Error submitting claim. Please try again later.';
+                        modal.style.display = 'block';
+                    }
+                });
+            } else {
+                console.error('Claim form not found on the page.');
+            }
+
+            // Close the modal when the user clicks the OK button
+            const modalButton = document.getElementById('modalButton');
+            modalButton.addEventListener('click', () => {
+                const modal = document.getElementById('responseModal');
+                modal.style.display = 'none';
+            });
+        });
+    </script>
+
+</body>
+
+</html>
