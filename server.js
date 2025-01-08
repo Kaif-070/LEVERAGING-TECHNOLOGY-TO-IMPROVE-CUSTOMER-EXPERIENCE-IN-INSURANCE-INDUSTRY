@@ -40,9 +40,9 @@ const upload = multer({ storage });
 // Database Connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'insurance',
+    user: 'user name',
+    password: 'sql password',
+    database: 'db name',
 });
 
 db.connect((err) => {
@@ -185,7 +185,7 @@ app.get('/generate-qr/:id', async(req, res) => {
     const policyId = req.params.id;
 
     try {
-        const ngrokUrl = process.env.NGROK_URL || 'https://d878-182-71-109-122.ngrok-free.app'; //ngrok url
+        const ngrokUrl = process.env.NGROK_URL || 'https://2e03-182-71-109-122.ngrok-free.app'; //ngrok url
         const qrCodeUrl = `${ngrokUrl}/policy-details.html?id=${policyId}`;
         const qrCodeImage = await QRCode.toDataURL(qrCodeUrl);
         res.json({ qrCodeImage, qrCodeUrl });
